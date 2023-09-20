@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<head>
+	
+		<meta charset="UTF-8">
+		<title>Connexion</title>
+</head>
+<body>
+	<div>
+		<form action="#" th:action="@{/connexion}" th:object="${newUtilisateur}" method="post">
+			Email:
+			<input type="email" th:field="" name ="email">
+				
+			Password:
+			<input type="password" th:field="" name="password">
+			<input type="submit" value="send">
+		</form>
+	</div>
+	
+
+		<div th:each="utili:${utiList}">
+			
+			<p th:text="${utili.getEmail}"></p>
+			<p th:text="${utili.getPassword}"></p>	
+	    </div>
+
+</body>
+</html>

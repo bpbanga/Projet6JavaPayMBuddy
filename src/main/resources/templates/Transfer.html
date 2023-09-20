@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<head>
+	
+		<meta charset="UTF-8">
+		<title>Transfert</title>
+		
+		<link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+
+		<link rel="stylesheet" href="../static/css/transfert.css"  th:href="@{/css/style.css}">
+
+		
+</head>
+<body>
+	
+		
+		<header class= "container-fluid header">
+			<div class="container-fluid head">
+				<p>Pay My Buddy</p>
+			</div>
+			<div class ="container-fluid lognav">
+				<div class="logo">
+					<a href="#" class="logname">
+						<p>Pay My Buddy</p>
+				</a>
+				</div>
+				
+				<nav class="menu">
+					<a href="#">Home</a>
+					<a href="#">Transfer</a>
+					<a href="#">Profile</a>
+					<a href="#">Contact</a>
+					<a href="#">log off</a>
+				</nav>
+			</div> 
+		</header>
+	 <div class="container-fluid reperage">
+		 <p>home</p>
+	</div>
+	
+	<div class="form_trans">
+		<form action="#" th:action="@{/transfer}" th:object="${transaction}" method="post">	
+			<select class="form-control" id="connections" name="connections">
+			        <option value="">Select A Connections</option>
+			        <option th:each="ami : ${amis}"
+			                th:value="${ami.getIdUtilisateur}"
+			                th:text="${ami.getIdUtilisateur}+' : '+${ami.getNom}" name="connectionId">
+			        </option>
+    		</select>
+			<input type="number"  class="montantDemande"th:field="*{montantDemande}" min="0" max="1000" name="montantDemande">
+			<input type="submit" value="Pay">
+		</form>
+	</div>
+	
+	
+	<table class="table">
+		<h3 > My Transactions</h3>
+			<tr >
+				 <th>Conections</th> 
+				 <th>Description</th> 
+				 <th>Amount</th> 
+			</tr>
+			<tr th:each="trans,state:${transFerts}"
+			             class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+				<td th:utext="${trans.getDestinataire.getNom}">Connections</td>
+				<td th:text="${trans.getDescription}">Description</td>
+				<td  th:text="${trans.getMontantDemande}">Amount</td>
+			</tr>
+			
+	</table>    
+	    
+
+</body>
+</html>

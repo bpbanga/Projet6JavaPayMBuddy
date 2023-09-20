@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<head>
+	
+		<meta charset="UTF-8">
+		<title>Home</title>
+		
+		<link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+
+		<link rel="stylesheet" href="../static/css/style.css"  th:href="@{/css/style.css}">
+
+		
+</head>
+<body>
+	
+		
+		<header class= "container-fluid header">
+			<div class="container-fluid head">
+				<p>Pay My Buddy</p>
+			</div>
+			<div class ="container-fluid lognav">
+				<div class="logo">
+					<a href="#" class="logname">
+						<p>Pay My Buddy</p>
+				</a>
+				</div>
+				
+				<nav class="menu">
+					<a href="#">Home</a>
+					<a href="#">Transfer</a>
+					<a href="#">Profile</a>
+					<a href="#">Contact</a>
+					<a href="#">log off</a>
+				</nav>
+			</div> 
+		</header>
+	 <div class="container-fluid reperage">
+		 <p>home</p>
+	 </div>
+	 <div class="corpus"> 
+		 <p>Bienvenue a l'utilisateur de l'application Pay My Buddy. Grace a Pay My buddy vous pourez effectuer toutes sorte de transfert tels que:
+			 
+		 </p>
+	 <!--</div>
+	 
+	 	<div>
+		<form action="#" th:action="@{/home}" th:object="${utilisateur}" method="post">
+			Email:
+			<input type="email" th:field="*{email}">
+				
+			Password:
+			<input type="password" th:field="*{password}">
+			<input type="submit" value="send">
+		</form>
+	</div>-->
+	
+	<p th:text="${testAttribute}">iman</p>
+
+		<div th:each="uti:${utiList}">
+			
+			<p th:text="${uti.getEmail}">iman</p>
+			<p th:text="${uti.getIdUtilisateur}">iman</p>
+			<p >courses</p>	
+	    </div>
+</body>
+</html>
