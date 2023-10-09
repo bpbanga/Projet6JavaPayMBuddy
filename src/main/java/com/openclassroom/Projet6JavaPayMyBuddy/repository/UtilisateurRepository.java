@@ -8,4 +8,6 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.Utilisateur;
 @Repository
 public interface UtilisateurRepository extends CrudRepository<Utilisateur, Integer> {
 
+	public Utilisateur findByEmail(String email);
+
 }

@@ -1,12 +1,12 @@
 /*@charset "UTF-8";*/
 
-body , html {
-	padding: 0;
-	margin:0;
+/*body {
+	display: block;
+	
+	font-family: Cambria , Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-
-body {
-	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+.container-fluid header{
+	display:flex;
 }
 
 a , a:hover {
@@ -16,33 +16,52 @@ a , a:hover {
 .header{
 	background-color: #736D6D;
 	height: 40px;
-	line-height: 40px;
-}
 
-.logo {
-	background-color: #56CB62;
+}
+.head p {
+	text-align: center;
+	color: white;
+}
+.lognav {
+	display: block;
 	height: 40px;
+}
+.logo {
+display: flex;
+    justify-content: center;
+    background-color: #56CB62;
+	height: 38px;
 	width: 200px;
 	float: left;
+	margin: 1px;
+	border-radius: 0px 0px 4px 4px;
 	
 }
-
 .logname {
-	
-	text-transform:  uppercase;
+	align-self: center;
+	text-align: center;
 	font-weight: bold;
-	letter-spacing: 1px;
+}
+
+
+.form_trans{
+	display: flex;
+	flex-direction: row;
+	background-color: #ADA3A3;
+	width: 700px;
+	height: 150px;
 }
 
 .menu{
 	float: right;
-	
+ color: #000000;	
+
 }
 
+
 .menu a {
-	background-color: #000000;
-	
-	
+	color: #000000;
+	padding: 15px;	
 }
 
 .menu a:hover{
@@ -57,7 +76,28 @@ a , a:hover {
 	color: #377DE7;
 }
 
+.container{
+	margin-top:20px;
+	padding : 200px;
+	width: 700px;
+}
 
+.table-trans{
+	width: 700px;
+	height: 360px;
+}
+
+tr {
+	
+	width: 700px;
+	height: 90px;
+}*/
+
+
+
+
+ 
+      
 
 
        

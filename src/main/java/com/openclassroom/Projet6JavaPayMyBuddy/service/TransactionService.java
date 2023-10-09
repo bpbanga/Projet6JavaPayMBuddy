@@ -38,14 +38,14 @@ public class TransactionService {
 		List<Utilisateur>utilisateurs = (List<Utilisateur>) utilisateurDao.findAll();
 		for (Utilisateur destinataire : utilisateurs) {
 			if(idDest == destinataire.getIdUtilisateur()) {
-				 destinataire.setSoldeCompte(montRecu + destinataire.getSoldeCompte());
+				 destinataire.setAccountBalance(montRecu + destinataire.getAccountBalance());
 				 
 			}
 			utilisateurDao.save(destinataire);
 		}
 		for (Utilisateur emetteur : utilisateurs) {
 			if(idUticonnect == emetteur.getIdUtilisateur()) {
-				emetteur.setSoldeCompte(emetteur.getSoldeCompte()  - montantDem  );
+				emetteur.setAccountBalance(emetteur.getAccountBalance()  - montantDem  );
 				 
 			}
 			utilisateurDao.save(emetteur);

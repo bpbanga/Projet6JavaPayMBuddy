@@ -5,70 +5,120 @@
 	
 		<meta charset="UTF-8">
 		<title>Transfert</title>
-		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
-
-		<link rel="stylesheet" href="../static/css/transfert.css"  th:href="@{/css/style.css}">
+		<link rel="stylesheet" href="../static/css/transfert.css"  th:href="@{/css/transfert.css}">
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+ 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 		
 </head>
 <body>
 	
 		
-		<header class= "container-fluid header">
-			<div class="container-fluid head">
-				<p>Pay My Buddy</p>
+		<header class= "container-fluid header text-white d-flex justify-content-center bg-secondary">
+					<p>Pay My Buddy</p>	
+		</header>	
+			<div class =" d-flex lognav justify-content-between">
+					<div class="logo align-content-start bg-success ">
+						<a href="#" class="text-white ">
+							<p>Pay My Buddy</p>
+						</a>
+					</div>
+					
+					<nav class=" nav   justify-content-between ">
+							<li class="nav-item text-black">
+								<a class="nav-link"href="/home">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"href="/transfer">Transfer</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"href="/profil">Profile</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"href="/contact">Contact</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link"href="/logoff">log off</a>
+							</li>
+					</nav>
+							
+					
+						
 			</div>
-			<div class ="container-fluid lognav">
-				<div class="logo">
-					<a href="#" class="logname">
-						<p>Pay My Buddy</p>
-				</a>
-				</div>
-				
-				<nav class="menu">
-					<a href="#">Home</a>
-					<a href="#">Transfer</a>
-					<a href="#">Profile</a>
-					<a href="#">Contact</a>
-					<a href="#">log off</a>
-				</nav>
-			</div> 
-		</header>
-	 <div class="container-fluid reperage">
+			 
+		
+	 <div class="  reperage">
 		 <p>home</p>
 	</div>
 	
-	<div class="form_trans">
-		<form action="#" th:action="@{/transfer}" th:object="${transaction}" method="post">	
-			<select class="form-control" id="connections" name="connections">
-			        <option value="">Select A Connections</option>
-			        <option th:each="ami : ${amis}"
-			                th:value="${ami.getIdUtilisateur}"
-			                th:text="${ami.getIdUtilisateur}+' : '+${ami.getNom}" name="connectionId">
-			        </option>
-    		</select>
-			<input type="number"  class="montantDemande"th:field="*{montantDemande}" min="0" max="1000" name="montantDemande">
-			<input type="submit" value="Pay">
-		</form>
-	</div>
+	<div style="height:80px;"  class="container ">
+		<div class="d-flex title-connection justify-content-between">
+			<h3 class="title-trans ">Send Money</h3>
+			<button class="add-Connection  bg-primary text-white">Add Connection</button>
+		</div>
+		
+			<div style="height:200px;background-color:#ddd"
+				 class="container-fluid  form-trans justify-content-center bg-striped ">
+				
+				<form class="  d-inline-flex form-tran align-baseline bg-striped border "
+							 action="#" th:action="@{/transfer}" th:object="${transaction}" method="post">	
+					<select class="custom-select seelct-form"   id="connections" name="connections">
+					        <option selected>Select A Connections</option>
+					        <option th:each="ami : ${amis}"
+					                th:value="${ami.getIdUtilisateur}"
+					                th:text="${ami.getIdUtilisateur}+' : '+${ami.getName}" name="connectionId">
+					        </option>
+		    		</select>
+					<input type="number"  class="montantDemande"th:field="*{montantDemande}" min="0" max="1000" name="montantDemande">
+					<button class=" btn pay-button bg-success text-white" type="submit">Pay</button>
+				</form>
+			</div>
 	
-	
-	<table class="table">
-		<h3 > My Transactions</h3>
-			<tr >
-				 <th>Conections</th> 
-				 <th>Description</th> 
-				 <th>Amount</th> 
-			</tr>
-			<tr th:each="trans,state:${transFerts}"
-			             class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
-				<td th:utext="${trans.getDestinataire.getNom}">Connections</td>
-				<td th:text="${trans.getDescription}">Description</td>
-				<td  th:text="${trans.getMontantDemande}">Amount</td>
-			</tr>
 			
-	</table>    
+			
+			<div class="container table-cont">
+				
+				<h2 > My Transactions</h2>
+				<table class="table  table-striped text-white ">
+				
+					<thead class="thead-dark">
+						
+						<tr >
+						 <th>Connections</th> 
+						 <th>Description</th> 
+						 <th>Amount</th> 
+					</tr>
+						
+					</thead>
+					<tbody>
+						
+						<tr th:each="trans,state:${transFerts}"
+					             class="align-baseline table" th:classappend="${state.odd} ? 'odd-table' : 'even-table'">
+						<td th:text="${trans.getDestinataire.getName}">Connections</td>
+						<td th:text="${trans.getDescription}">Description</td>
+						<td  th:text="${trans.getMontantDemande}">Amount</td>
+					</tr>
+					
+					</tbody>
+					
+			</table>
+			<span class="table border-dark"></span>
+			 <ul class="pagination justify-content-center" style="margin:20px 0">
+							    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+							    <li class="page-item"><a class="page-link" href="#">1</a></li>
+							    <li class="page-item"><a class="page-link" href="#">2</a></li>
+							    <li class="page-item"><a class="page-link" href="#">3</a></li>
+							    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+			  			   </ul> 
+			</div>	
+				   
+				
+					
+				
+	</div>
 	    
 
 </body>

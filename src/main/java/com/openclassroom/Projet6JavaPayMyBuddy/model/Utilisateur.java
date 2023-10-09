@@ -31,8 +31,8 @@ public class Utilisateur {
 		
 	
 	
-	@Column( name = "solde_compte")
-	private float soldeCompte;
+	@Column( name = "account_balance")
+	private float accountBalance;
 		
 	@Column( name = "rib")
 	private String rib;
@@ -40,8 +40,8 @@ public class Utilisateur {
 	@Column( name = "email")
 	private String email;
 	
-	@Column( name = "nom")
-	private String nom;
+	@Column( name = "name")
+	private String name;
 	
 	@Column( name = "password")
 	private String password;
@@ -68,10 +68,10 @@ public class Utilisateur {
 
 	
 
-	public Utilisateur(int idUtilisateur, String nom, float soldeCompte, String rib, String email, String password) {
+	public Utilisateur(int idUtilisateur, String nom, float accountBalance, String rib, String email, String password) {
 		super();
 		this.idUtilisateur = idUtilisateur;
-		this.soldeCompte = soldeCompte;
+		this.accountBalance = accountBalance;
 		this.rib = rib;
 		this.email = email;
 		this.password = password;
@@ -96,14 +96,14 @@ public class Utilisateur {
 
 
 
-	public float getSoldeCompte() {
-		return soldeCompte;
+	public float getAccountBalance() {
+		return accountBalance;
 	}
 
 
 
-	public void setSoldeCompte(float soldeCompte) {
-		this.soldeCompte = soldeCompte;
+	public void setAccountBalance(float accountBalance) {
+		this.accountBalance = accountBalance;
 	}
 
 
@@ -155,14 +155,14 @@ public class Utilisateur {
 	}
 
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 

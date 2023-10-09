@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +23,6 @@ import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.service.TransactionService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 
 
@@ -39,12 +36,12 @@ public class TransferController {
 	@Autowired
 	private UtilisateurRepository utilisateurDao;
     private static final Logger logger = LogManager.getLogger("TransferController");
-    
+   
     
   	
 	@GetMapping("/transfer")
 	public String getTransactions(Model model) {
-		logger.info("GET request to /transfer");
+	logger.info("GET request to /transfer");
 		int idUticonnect = 1;
 		Optional<Utilisateur> utiConnect = utilisateurDao.findById(idUticonnect);
 		if(utiConnect.isPresent()) {
@@ -79,12 +76,12 @@ public class TransferController {
 
 			if(utiConnect.isPresent() ||utiDes.isPresent()) {			
 				float comm = (float) (montantDemander * 0.05);
-				if((utiConnect.get().getSoldeCompte() > (montantDemander + comm)) || (montantDemander != 0)) {
+				if((utiConnect.get().getAccountBalance() > (montantDemander + comm)) || (montantDemander != 0)) {
 					
 
 					 Transaction trans = new Transaction();
 					 trans.setDescription("Tickets restau");
-					 trans.setEmmeteur(utiConnect.get());
+			 trans.setEmmeteur(utiConnect.get());
 					 trans.setDestinataire(utiDes.get());
 					 trans.setMontantDemande(montantDemander);
 					 trans.setMontantCommision(comm);
@@ -108,14 +105,14 @@ public class TransferController {
 			
 		}
 		
-		return "redirect:transfer";
+	return "redirect:transfer";
 		
 	}
 
 	
     		    
     
-    
+   
 
 	
 	

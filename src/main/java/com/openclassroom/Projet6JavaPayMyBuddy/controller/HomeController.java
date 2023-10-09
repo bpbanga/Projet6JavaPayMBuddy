@@ -1,38 +1,30 @@
 
-  package com.openclassroom.Projet6JavaPayMyBuddy.controller;
+package com.openclassroom.Projet6JavaPayMyBuddy.controller;
   
-  import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller; import
-  org.springframework.ui.Model; import
-  org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import  org.springframework.ui.Model;
+import  org.springframework.web.bind.annotation.GetMapping;
 
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Utilisateur;
-import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
-  
+
   
   @Controller 
   public class HomeController {
-	  @Autowired
-	  UtilisateurRepository utilisateurDao;
+	  
+	    private static final Logger logger = LogManager.getLogger("HomeController");
+
+	  
   
   @GetMapping("/home") 
   public String showHome(Model model) {
-	  model.addAttribute("utiList", utilisateurDao.findAll());
-	  model.addAttribute("utilisateur" , new Utilisateur());
-	  model.addAttribute("testAttribute", "mon attribut");
+		logger.info("GET request to /home");
+
+	  
   
   return "Home";
   }
-  
-  @PostMapping("/home")
-  public String getHome(@ModelAttribute  Utilisateur newUtilisateur) {
-	  
-	 
-	  
-	  return "redirect:home" ;
-  }
+ 
   
   
   

@@ -4,35 +4,54 @@
   
   import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean; 
-  import org.springframework.context.annotation.Configuration; 
-  import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+  import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
   import org.springframework.security.config.annotation.web.configuration. EnableWebSecurity;
-  import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.core.userdetails.User;
   import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager; 
   import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.openclassroom.Projet6JavaPayMyBuddy.service.UtilisateurService;
   
   @Configuration
   
   @EnableWebSecurity
   
   public class SecurityConfig {
+	  
+	  @Autowired
+	  private UtilisateurService utilisateurService;
+	  
   
   @Bean
   
   
-  public SecurityFilterChain payMyBuddySecurity (HttpSecurity http) throws Exception{
-	  return http.authorizeRequests()
-			  .requestMatchers("/transfer").authenticated()
-			  .anyRequest().permitAll()
+  public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+			  .requestMatchers("/static/**").permitAll()
+			  .requestMatchers("registration/**").permitAll()
+		      .anyRequest().authenticated()
 			  .and()
 			  .formLogin()
-			  .and()
-			  .build();		
-	  
+				
+			  .loginPage("/login") .defaultSuccessUrl("/home")
+			  .failureUrl("/login?error=true") .successHandler(this.loginSuccessHandler())
+			  .permitAll() 
+			  .and() 
+			  .logout()
+			  .permitAll();
+			  
+		return http.build();
 	  /*
 		 * http .authorizeRequests((auth) -> auth
 		 * .requestMatchers("/transfer").authenticated()
@@ -64,17 +83,29 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 	
 	  @Bean
 	  
-	  public PasswordEncoder passwordEncoder() { return new
-	  BCryptPasswordEncoder();
+	  public BCryptPasswordEncoder  passwordEncoder() { 
+		  return new  BCryptPasswordEncoder();
 	  
 	  
 	  }
-	 
-  
+
+		/*
+		 * @Bean public AuthenticationManager payMyBuddySecurity (HttpSecurity http ,
+		 * BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception{
+		 * AuthenticationManagerBuilder authentificationManagerBuilder = http
+		 * .getSharedObject(AuthenticationManagerBuilder.class);
+		 * authentificationManagerBuilder.userDetailsService(utilisateurService)
+		 * .passwordEncoder(bCryptPasswordEncoder); return
+		 * authentificationManagerBuilder.build(); }
+		 */
+	  @Bean
+	  public AuthenticationSuccessHandler loginSuccessHandler() {
+		  return new CustumAuthentificationSuccessHandler();
+	  }
 	  
- }
 	  
-  
+	  
+  } 
 	  
   
 
