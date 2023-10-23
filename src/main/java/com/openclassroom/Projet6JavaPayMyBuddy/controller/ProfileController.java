@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Transaction;
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Utilisateur;
-import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
+import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 @Controller
 public class ProfileController {
 	
@@ -19,18 +21,21 @@ public class ProfileController {
 
 
 	@Autowired
-		private UtilisateurRepository utilisateurDao;
+		private UserRepository utilisateurDao;
 	    private static final Logger logger = LogManager.getLogger("ProfilController");
 	    
 	    
 	  	
 		@GetMapping("/profil")
-		public String showProfile(Model model) {
+		public String showProfile(Model model , HttpSession session) {
 			logger.info("GET request to /profile");
-			int idUticonnect = 1;
-			java.util.Optional<Utilisateur> userPofileId = utilisateurDao.findById(idUticonnect);
+			
+			 UserDto utiConnect = utilisateurDao.findByEmail( session.getAttribute("username").toString());
+
+			int idUticonnect = 2;
+			java.util.Optional<UserDto> userPofileId = utilisateurDao.findById(idUticonnect);
 		if(userPofileId.isPresent()) {
-				Optional<Utilisateur> user = userPofileId;
+				UserDto user = utiConnect;
 				
 			 
 				 

@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction {
+public class TransactionDto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,14 +39,14 @@ public class Transaction {
 			cascade = CascadeType.MERGE
 			)
 	@JoinColumn( name = "destinataire_id")
-	private Utilisateur  destinataire;
+	private UserDto  destinataire;
 	
 	
 	@ManyToOne( 
 			cascade = CascadeType.MERGE
 			)
 	@JoinColumn( name = "emmeteur_id")
-	private Utilisateur emmeteur;
+	private UserDto emmeteur;
 
 	
 	
@@ -100,29 +100,29 @@ public class Transaction {
 	}
 
 
-	public Utilisateur getDestinataire() {
+	public UserDto getDestinataire() {
 		return destinataire;
 	}
 
 
-	public void setDestinataire(Utilisateur destinataire) {
+	public void setDestinataire(UserDto destinataire) {
 		this.destinataire = destinataire;
 	}
 
 
-	public Utilisateur getEmmeteur() {
+	public UserDto getEmmeteur() {
 		return emmeteur;
 	}
 
 
-	public void setEmmeteur(Utilisateur emmeteur) {
+	public void setEmmeteur(UserDto emmeteur) {
 		this.emmeteur = emmeteur;
 	}
 	
 	
 
-	public Transaction(int idTransaction, String typeTransaction, float montantDemande, float montantCommision,
-			String description, Utilisateur destinataire, Utilisateur emmeteur) {
+	public TransactionDto(int idTransaction, String typeTransaction, float montantDemande, float montantCommision,
+			String description, UserDto destinataire, UserDto emmeteur) {
 		super();
 		this.idTransaction = idTransaction;
 		this.typeTransaction = typeTransaction;
@@ -133,14 +133,14 @@ public class Transaction {
 		this.emmeteur = emmeteur;
 	}
 	
-	public Transaction() {
+	public TransactionDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 
 
 
-	public Transaction(Object object, Object object2) {
+	public TransactionDto(Object object, Object object2) {
 		// TODO Auto-generated constructor stub
 	}
 }

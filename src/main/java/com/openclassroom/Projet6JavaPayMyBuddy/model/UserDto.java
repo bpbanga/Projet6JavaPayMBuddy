@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
-public class Utilisateur {
+public class UserDto {
 	
 	
 
@@ -52,23 +52,23 @@ public class Utilisateur {
 	                    name = "id_emetteur", referencedColumnName = "id"),
 	            inverseJoinColumns = @JoinColumn(
 	                    name = "id_recepteur", referencedColumnName = "id"))
-	    private List<Utilisateur> amis = new ArrayList<>();
+	    private List<UserDto> amis = new ArrayList<>();
 	
 	@OneToMany(
 			mappedBy ="destinataire",
 			cascade =CascadeType.ALL,
 			orphanRemoval = true)
-	List<Transaction> emetteurs = new ArrayList<>();
+	List<TransactionDto> emetteurs = new ArrayList<>();
 	
 	@OneToMany(
 			mappedBy ="emmeteur",
 			cascade =CascadeType.ALL,
 			orphanRemoval = true)
-     List<Transaction> recepteurs = new ArrayList<>();
+     List<TransactionDto> recepteurs = new ArrayList<>();
 
 	
 
-	public Utilisateur(int idUtilisateur, String nom, float accountBalance, String rib, String email, String password) {
+	public UserDto(int idUtilisateur, String nom, float accountBalance, String rib, String email, String password) {
 		super();
 		this.idUtilisateur = idUtilisateur;
 		this.accountBalance = accountBalance;
@@ -79,7 +79,7 @@ public class Utilisateur {
 
 
 
-	public Utilisateur() {
+	public UserDto() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -144,13 +144,13 @@ public class Utilisateur {
 
 
 
-	public List<Utilisateur> getAmis() {
+	public List<UserDto> getAmis() {
 		return amis;
 	}
 
 
 
-	public void setAmis(List<Utilisateur> amis) {
+	public void setAmis(List<UserDto> amis) {
 		this.amis = amis;
 	}
 
@@ -167,25 +167,25 @@ public class Utilisateur {
 
 
 
-	public List<Transaction> getEmetteurs() {
+	public List<TransactionDto> getEmetteurs() {
 		return emetteurs;
 	}
 
 
 
-	public void setEmetteurs(List<Transaction> emetteurs) {
+	public void setEmetteurs(List<TransactionDto> emetteurs) {
 		this.emetteurs = emetteurs;
 	}
 
 
 
-	public List<Transaction> getRecepteurs() {
+	public List<TransactionDto> getRecepteurs() {
 		return recepteurs;
 	}
 
 
 
-	public void setRecepteurs(List<Transaction> recepteurs) {
+	public void setRecepteurs(List<TransactionDto> recepteurs) {
 		this.recepteurs = recepteurs;
 	}
 

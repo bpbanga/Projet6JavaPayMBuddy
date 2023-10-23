@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Transaction;
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Utilisateur;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
-import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
+import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.service.TransactionService;
+import com.openclassroom.Projet6JavaPayMyBuddy.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -34,29 +37,33 @@ public class TransferController {
 	@Autowired
 	private TransactionRepository transactionDao;
 	@Autowired
-	private UtilisateurRepository utilisateurDao;
+	private UserRepository utilisateurDao;
+	
     private static final Logger logger = LogManager.getLogger("TransferController");
    
     
   	
 	@GetMapping("/transfer")
-	public String getTransactions(Model model) {
+	public String getTransactions(Model model, HttpSession session) {
 	logger.info("GET request to /transfer");
-		int idUticonnect = 1;
-		Optional<Utilisateur> utiConnect = utilisateurDao.findById(idUticonnect);
-		if(utiConnect.isPresent()) {
-			List<Utilisateur> amis = utiConnect.get().getAmis();
+	/*
+	 * int idUticonnect = 1; Optional<UserDto> utiConnect =
+	 * utilisateurDao.findById(idUticonnect);
+	 */
+	 UserDto utiConnect = utilisateurDao.findByEmail( session.getAttribute("username").toString());
+		
+			List<UserDto> amis = utiConnect.getAmis();
 			 model.addAttribute("amis", amis);
 			 
-			 List<Transaction> transUtiConnect = new ArrayList<Transaction>();
-			 for(Transaction transac:transactionDao.findAll()) {
-				 if(transac.getEmmeteur().getIdUtilisateur() == utiConnect.get().getIdUtilisateur()) {
+			 List<TransactionDto> transUtiConnect = new ArrayList<TransactionDto>();
+			 for(TransactionDto transac:transactionDao.findAll()) {
+				 if(transac.getEmmeteur().getIdUtilisateur() == utiConnect.getIdUtilisateur()) {
 					 transUtiConnect.add(transac);
 				 }
 			 }
 			  model.addAttribute("transFerts", transUtiConnect );
-			  model.addAttribute("transaction", new Transaction()); 
-		}
+			  model.addAttribute("transaction", new TransactionDto()); 
+		
 		
 
 
@@ -65,23 +72,25 @@ public class TransferController {
 	}
 	
 	@RequestMapping(value="/transfer" , method=RequestMethod.POST)
-	public String getTransaction(@RequestParam("connections") int idAmi, @RequestParam("montantDemande") float montantDemander,
-								 @ModelAttribute Transaction newTransaction) {
+	public String getTransaction(HttpSession session,  @RequestParam("connections") int idAmi, @RequestParam("montantDemande") float montantDemander,
+								 @ModelAttribute TransactionDto newTransaction) {
 		logger.info("POST request form to /transfer");
 		try {
 			
-			int idUticonnect = 1;
-			Optional<Utilisateur> utiConnect = utilisateurDao.findById(idUticonnect);
-			Optional<Utilisateur> utiDes = utilisateurDao.findById(idAmi);
+			
+			
+			 UserDto utiConnect = utilisateurDao.findByEmail( session.getAttribute("username").toString());
+			 
+						Optional<UserDto> utiDes = utilisateurDao.findById(idAmi);
 
-			if(utiConnect.isPresent() ||utiDes.isPresent()) {			
+						
 				float comm = (float) (montantDemander * 0.05);
-				if((utiConnect.get().getAccountBalance() > (montantDemander + comm)) || (montantDemander != 0)) {
+				if((utiConnect.getAccountBalance() > (montantDemander + comm)) || (montantDemander != 0)) {
 					
 
-					 Transaction trans = new Transaction();
+					 TransactionDto trans = new TransactionDto();
 					 trans.setDescription("Tickets restau");
-			 trans.setEmmeteur(utiConnect.get());
+					 trans.setEmmeteur(utiConnect);
 					 trans.setDestinataire(utiDes.get());
 					 trans.setMontantDemande(montantDemander);
 					 trans.setMontantCommision(comm);
@@ -91,8 +100,8 @@ public class TransferController {
 
 				}
 				
-				   transactionService.BuildTransaction(idAmi, idUticonnect , montantDemander);
-			}
+				   transactionService.BuildTransaction(idAmi, utiConnect.getIdUtilisateur() , montantDemander);
+			
 			
 			
 			 

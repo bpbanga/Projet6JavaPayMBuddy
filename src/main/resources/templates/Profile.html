@@ -48,24 +48,30 @@
 			</div>
 			 
 		
-	 <div class="  reperage">
-		 <p>profile</p>
+ <div class="  reperage">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb">
+			    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+			    <li class="breadcrumb-item"><a href="/transfer">Transfer</a></li>
+			    <li class="breadcrumb-item active" aria-current="page">profile</a></li>
+			  </ol>
+			</nav>
 	</div>
 	<div class="d-flex container-fluid full-body justify-content-center">
 		<h1>My Profile</h1>
 	</div>
 	<div class="container bloc-content jumbotron">
 					<p>Solde compte actuel
-						<p  th:text="${user.get.getAccountBalance}"></p>
+						<p  th:text="${user.getAccountBalance}"></p>
 					</p>
 					<p>Rib
-						<p th:text="${user.get.getRib}" ></p>
+						<p th:text="${user.getRib}" ></p>
 					</p> 
 					<p>Name
-						<p th:text="${user.get.getName}" ></p>
+						<p th:text="${user.getName}" ></p>
 					</p>
 					<p>Email
-						<p th:text="${user.get.getEmail}" ></p>
+						<p th:text="${user.getEmail}" ></p>
 					</p>
 	</div>
 	

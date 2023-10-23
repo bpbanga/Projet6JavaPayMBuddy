@@ -21,7 +21,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
   import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.openclassroom.Projet6JavaPayMyBuddy.service.UtilisateurService;
+import com.openclassroom.Projet6JavaPayMyBuddy.service.UserService;
   
   @Configuration
   
@@ -30,55 +30,65 @@ import com.openclassroom.Projet6JavaPayMyBuddy.service.UtilisateurService;
   public class SecurityConfig {
 	  
 	  @Autowired
-	  private UtilisateurService utilisateurService;
+	  private UserService userService;
 	  
   
   @Bean
   
   
   public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
-		http.authorizeRequests()
-			  .requestMatchers("/static/**").permitAll()
-			  .requestMatchers("registration/**").permitAll()
-		      .anyRequest().authenticated()
-			  .and()
-			  .formLogin()
-				
-			  .loginPage("/login") .defaultSuccessUrl("/home")
-			  .failureUrl("/login?error=true") .successHandler(this.loginSuccessHandler())
-			  .permitAll() 
-			  .and() 
-			  .logout()
-			  .permitAll();
-			  
-		return http.build();
-	  /*
+		
+		  http.authorizeRequests() .requestMatchers("/static/**").permitAll()
+		  .requestMatchers("/login")
+		  .permitAll() 
+		  .anyRequest()
+		  .authenticated()
+		  .and() 
+		  .formLogin()
+		  
+		  .loginPage("/login") 
+		  .defaultSuccessUrl("/home")
+		  .failureUrl("/login?error=true")
+		  .usernameParameter("email")
+          .passwordParameter("password")
+		  .successHandler(this.loginSuccessHandler())
+		  .permitAll() 
+		  .and() 
+		  .logout() 
+		  .permitAll();
+		  
+		  return http.build();
+		 
+	  
+		/*
 		 * http .authorizeRequests((auth) -> auth
 		 * .requestMatchers("/transfer").authenticated()
 		 * 
 		 * .requestMatchers("/home").hasAnyRole("ADMIN", " USER")
-		 * .requestMatchers("/connexion").hasAnyRole(" ADMIN", " USER")
-		 * .requestMatchers("/login").hasAnyRole(" ADMIN", " USER")
+		 * .requestMatchers("/transfer").hasAnyRole(" ADMIN", " USER")
+		 * .requestMatchers("/profil").hasAnyRole(" ADMIN", " USER")
 		 * 
 		 * .anyRequest() .authenticated() ) .httpBasic(); return http.build();
+		 * 
 		 */
-	  
   }
   
-  @Bean
-  
-  public InMemoryUserDetailsManager userDetailsService() {
-	  
-	  return new InMemoryUserDetailsManager(
-			  new User("toto", passwordEncoder().encode("password"), Collections.emptyList())
-			  );
+	/*
+	 * @Bean
+	 * 
+	 * public InMemoryUserDetailsManager userDetailsService() {
+	 * 
+	 * return new InMemoryUserDetailsManager( new User("toto",
+	 * passwordEncoder().encode("password"), Collections.emptyList()) );
+	 */
 		/*
 		 * UserDetails user = User.builder() .username("toto")
 		 * .password(passwordEncoder().encode("password")) .roles("USER") .build();
 		 * 
-		 * return new InMemoryUserDetailsManager(user);
+		 * return new InMemoryUserDetailsManager(user);}
 		 */
-  }
+  
+  
   
 	
 	  @Bean
@@ -98,10 +108,10 @@ import com.openclassroom.Projet6JavaPayMyBuddy.service.UtilisateurService;
 		 * .passwordEncoder(bCryptPasswordEncoder); return
 		 * authentificationManagerBuilder.build(); }
 		 */
-	  @Bean
-	  public AuthenticationSuccessHandler loginSuccessHandler() {
-		  return new CustumAuthentificationSuccessHandler();
-	  }
+		
+		  @Bean public AuthenticationSuccessHandler loginSuccessHandler() { return new
+		  CustumAuthentificationSuccessHandler(); }
+		 
 	  
 	  
 	  

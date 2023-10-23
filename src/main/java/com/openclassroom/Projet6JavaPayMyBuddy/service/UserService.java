@@ -12,19 +12,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.openclassroom.Projet6JavaPayMyBuddy.model.Utilisateur;
-import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
+import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
 
 @Service
-public  class UtilisateurService implements UserDetailsService{
+public  class UserService implements UserDetailsService{
 	@Autowired
-	private UtilisateurRepository utilisateurRepository;
+	private UserRepository userRepository;
 
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		Utilisateur user = utilisateurRepository.findByEmail(email);		
+		UserDto user = userRepository.findByEmail(email);	
+        if (user == null) {
+            throw new UsernameNotFoundException(email);
+        }
 		return new User(user.getEmail(), user.getPassword(), getGrantedAuthorities("USER"));
 		
 	}
