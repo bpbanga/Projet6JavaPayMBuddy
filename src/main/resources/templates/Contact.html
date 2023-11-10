@@ -4,10 +4,10 @@
 <head>
 	
 		<meta charset="UTF-8">
-		<title>Profile</title>
+		<title>Contact</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
-		<link rel="stylesheet" href="../static/css/profile.css"  th:href="@{/css/profile.css}">
+		<link rel="stylesheet" href="../static/css/contact.css"  th:href="@{/css/contact.css}">
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
   		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
  		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -56,41 +56,47 @@
 			<nav aria-label="breadcrumb">
 			  <ol class="breadcrumb">
 			    <li class="breadcrumb-item"><a  style ="text-decoration : none;  padding: 6px; " href="/home">Home</a></li>
-			    <li class="breadcrumb-item"><a   style ="text-decoration : none;  padding: 6px; "href="/transfer">Transfer</a></li>
-			    <li class="breadcrumb-item active" aria-current="page">profile</a></li>
+			    <li class="breadcrumb-item"><a  style ="text-decoration : none;  padding: 6px; " href="/transfer">Transfer</a></li>
+			    <li class="breadcrumb-item"><a   style ="text-decoration : none;  padding: 6px; "href="/profil">Profile</a></li>
+
+			    <li class="breadcrumb-item active" aria-current="page">contact</a></li>
 			  </ol>
 			</nav>
 	</div>
 	<div class="d-flex container-fluid full-body justify-content-center">
-		<h1>My Profile</h1>
+		<h1>My Contacts</h1>
 	</div>
-	<div class="container bloc-content jumbotron">
-					<p>Solde compte actuel
-						<p  th:text="${user.getAccountBalance}"></p>
-					</p>
-					<p>Rib
-						<p th:text="${user.getRib}" ></p>
-					</p> 
-					<p>Name
-						<p th:text="${user.getName}" ></p>
-					</p>
-					<p>Email
-						<p th:text="${user.getEmail}" ></p>
-					</p>
-	</div>
-	
-	<form class="  d-inline-flex form-tran align-baseline bg-striped border "
-				   action="#" th:action="@{/profil}" th:object="${userAction}" method="post">
-		<input type="text"  class="rib" th:field="${userAction.recipient.rib}" placeholder="Enter your Rib" name="rib">
+	<table class="table  table-striped text-white ">
+				
+					<thead class="thead-dark">
+						
+						<tr >
+						 <th>Name</th> 
+						 <th>Adresse</th> 
+					</tr>
+						
+					</thead>
+					<tbody>
+						
+						<tr th:each="user,state:${users}"
+					             class="align-baseline table" th:classappend="${state.odd} ? 'odd-table' : 'even-table'">
+						<td th:text="${user.getName}">Name</td>
+						<td th:text="${user.getEmail}">Adresse</td>
+					</tr>
+					
+					</tbody>
+					
+			</table>
 
-				   	
-				<select class="custom-select seelct-form" th:field="${userAction.typeTransaction}"   id="connections" name="connections">
-									        <option value="deposit">Deposit</option>
-									        <option value="withdrawal">Withdrawal</option> 	        
-						    		</select>
-					<input type="number"  class="amountAsked"th:field="*{amountAsked}" min="0" max="1000" name="amountAsked">
-					<button class=" btn pay-button bg-success text-white" type="submit">Pay</button>
-	</form>
+
+	<form class="  d-inline-flex form-tran align-baseline bg-striped border "
+							 action="#" th:action="@{/contact}" th:object="${user}" method="post">	
+					<h2>Add Connections</h2>
+					<input type="email"  class="email"th:field="*{email}" placeholder="Enter the email connetion">
+					<button class=" btn pay-button bg-success text-white" type="submit"  value="Save">Add</button>
+				</form>
+	
+	
 	
 
 	

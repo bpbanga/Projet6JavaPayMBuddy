@@ -11,47 +11,76 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 */import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
 
+/**
+ * class allowing the construction of different functionalities on transactions
+ */
 @Service
 public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionDao;
 	@Autowired
-	private UserRepository utilisateurDao;
+	private UserRepository userDao;
 	
-	
+	/**
+	 * method returning the list of database transactions
+	 * @return list of transactions
+	 */
 	public List<TransactionDto> getTransactions() {
 		return (List<TransactionDto>) transactionDao.findAll();
 	} 
 	
-	/*
-	 * public Transaction getTransactionInformations(int idTrans) { Transaction
-	 * transInf = new Transaction(int idTransaction : String typeTransaction :float
-	 * montantDemande, float montantCommision, String description, Utilisateur
-	 * destinataire, Utilisateur emmeteur);
-	 * 
-	 * 
-	 * return transInf; }
-	 */
 	
-	public void BuildTransaction(int idDest, int idUticonnect, float montantDem) {
-		float montRecu = (float) (montantDem - (montantDem * 0.05));
-		List<UserDto>userDtos = (List<UserDto>) utilisateurDao.findAll();
-		for (UserDto destinataire : userDtos) {
-			if(idDest == destinataire.getIdUtilisateur()) {
-				 destinataire.setAccountBalance(montRecu + destinataire.getAccountBalance());
+	/**
+	 * method allowing the build of transaction between different users
+	 * @param idRec receiver identifier
+	 * @param idUticonnect  sender identifier
+	 * @param amountAsked amount requested
+	 */
+	public void buildTransaction(int idRec, int idUticonnect, float amountAsked) {
+		float amountRec = (float) (amountAsked - (amountAsked * 0.05));
+		List<UserDto>userDtos = (List<UserDto>) userDao.findAll();
+		for (UserDto recipient : userDtos) {
+			if(idRec == recipient.getIdUser()) {
+				recipient.setAccountBalance(amountRec + recipient.getAccountBalance());
 				 
 			}
-			utilisateurDao.save(destinataire);
+			userDao.save(recipient);
 		}
-		for (UserDto emetteur : userDtos) {
-			if(idUticonnect == emetteur.getIdUtilisateur()) {
-				emetteur.setAccountBalance(emetteur.getAccountBalance()  - montantDem  );
+		for (UserDto issuer : userDtos) {
+			if(idUticonnect == issuer.getIdUser()) {
+				issuer.setAccountBalance(issuer.getAccountBalance()  - amountAsked  );
 				 
 			}
-			utilisateurDao.save(emetteur);
+			userDao.save(issuer);
 
 		}
 		
+	}
+	
+	
+	/**
+	 * method allowing recharge or withdrawal (to another bank account) on the balance of any user account
+	 * @param rib bank account information
+	 * @param action type of transaction
+	 * @param amountTrans amount of transaction
+	 */
+	public void buildAccountBalance(String rib , String action, float amountTrans) {
+		float amountRec = (float) (amountTrans - (amountTrans * 0.05));
+		List<UserDto>userDtos = (List<UserDto>) userDao.findAll();
+		for (UserDto recipient : userDtos) {
+			if(rib == recipient.getRib()) {
+				if(action == "deposit" || action!= "") {
+					recipient.setAccountBalance(amountRec + recipient.getAccountBalance());
+
+				}else {
+					recipient.setAccountBalance(recipient.getAccountBalance() - amountRec);
+				}
+				
+				 
+			}
+			userDao.save(recipient);
+
+		}
 		
 	}
 

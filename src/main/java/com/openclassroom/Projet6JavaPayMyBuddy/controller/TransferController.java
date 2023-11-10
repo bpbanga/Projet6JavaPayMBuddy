@@ -9,8 +9,11 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +25,13 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.service.TransactionService;
-import com.openclassroom.Projet6JavaPayMyBuddy.service.UserService;
-
 import jakarta.servlet.http.HttpSession;
 
 
 
-
+/**
+ * Controller for /transfer endpoint
+ */
 @Controller
 public class TransferController {
 	
@@ -37,76 +40,117 @@ public class TransferController {
 	@Autowired
 	private TransactionRepository transactionDao;
 	@Autowired
-	private UserRepository utilisateurDao;
+	private UserRepository userDao;
 	
     private static final Logger logger = LogManager.getLogger("TransferController");
    
     
-  	
+  	/**
+  	 * Endpoint GET /tranfer to return Transfer
+  	 * @param model attribute who make link between the front and back end
+  	 * @param session attribute allowing to get a user connect
+  	 * @return html page of transfer
+  	 */
 	@GetMapping("/transfer")
-	public String getTransactions(Model model, HttpSession session) {
+	public String getTransactions(Model model, HttpSession session ,String error, @RequestParam(defaultValue = "0") int page  ) {
 	logger.info("GET request to /transfer");
-	/*
-	 * int idUticonnect = 1; Optional<UserDto> utiConnect =
-	 * utilisateurDao.findById(idUticonnect);
-	 */
-	 UserDto utiConnect = utilisateurDao.findByEmail( session.getAttribute("username").toString());
+   
+
+	 UserDto utiConnect = userDao.findByEmail( session.getAttribute("username").toString());
 		
-			List<UserDto> amis = utiConnect.getAmis();
-			 model.addAttribute("amis", amis);
+			List<UserDto> friends = utiConnect.getFriends();
+			 model.addAttribute("friends", friends);
 			 
 			 List<TransactionDto> transUtiConnect = new ArrayList<TransactionDto>();
 			 for(TransactionDto transac:transactionDao.findAll()) {
-				 if(transac.getEmmeteur().getIdUtilisateur() == utiConnect.getIdUtilisateur()) {
+				 if(transac.getIssuer().getIdUser() == utiConnect.getIdUser()) {
 					 transUtiConnect.add(transac);
 				 }
 			 }
-			  model.addAttribute("transFerts", transUtiConnect );
-			  model.addAttribute("transaction", new TransactionDto()); 
-		
-		
+			 int index = page * 3;
+			 List<TransactionDto> transAffiche = showTrans( index , transUtiConnect);
+			 int nbPage = (int) Math.ceil(transUtiConnect.size() / 3.0 );
+			
+			 
+			  model.addAttribute("transFerts", transAffiche );
+			  model.addAttribute("transFertsAll", transUtiConnect );
+			  model.addAttribute("transaction", new TransactionDto());
+			  model.addAttribute("error", error);
+			  model.addAttribute("currentPage", page);
+			  model.addAttribute("nbPage", nbPage);
 
 
 		
 		return "Transfer";
 	}
 	
+	public List<TransactionDto> showTrans( int index, List<TransactionDto> transList){
+		List<TransactionDto> listAffiche = new ArrayList<TransactionDto>() ;
+		int indexEnd = index + 3;
+		if(indexEnd > transList.size() ) {
+			indexEnd = transList.size();
+		}
+		listAffiche = transList.subList(index, indexEnd);
+		
+		return listAffiche;
+		
+	}
+	
+	
+	/**
+	 * post method allowing transaction of users
+	 * @param session attribute allowing to get a user connect
+	 * @param idFriend reference of the user who receive the amount
+	 * @param amountAsked value of amount asked
+	 * @param newTransaction attribute of the transaction
+	 * @return html page of transfer
+	 */
 	@RequestMapping(value="/transfer" , method=RequestMethod.POST)
-	public String getTransaction(HttpSession session,  @RequestParam("connections") int idAmi, @RequestParam("montantDemande") float montantDemander,
-								 @ModelAttribute TransactionDto newTransaction) {
+	public String getTransaction(HttpSession session,  @RequestParam("connections") int idFriend, @RequestParam("amountAsked") float amountAsked,
+								 @ModelAttribute TransactionDto newTransaction, String error ) {
 		logger.info("POST request form to /transfer");
 		try {
 			
 			
 			
-			 UserDto utiConnect = utilisateurDao.findByEmail( session.getAttribute("username").toString());
-			 
-						Optional<UserDto> utiDes = utilisateurDao.findById(idAmi);
+			 UserDto utiConnect = userDao.findByEmail( session.getAttribute("username").toString());
+			 if (idFriend == -1) {
+					
+					return "redirect:error?error=3";
+				}
+						Optional<UserDto> utiRec = userDao.findById(idFriend);
 
 						
-				float comm = (float) (montantDemander * 0.05);
-				if((utiConnect.getAccountBalance() > (montantDemander + comm)) || (montantDemander != 0)) {
+				float comm = (float) (amountAsked * 0.05);
+				//error handling
+				if(!(utiConnect.getAccountBalance() > (amountAsked + comm))) {
+					
+					return "redirect:/error?error=1";
+					
+						
+				}else if (amountAsked <= 0) {
+					
+					return "redirect:/error?error=2";
+
+				} 
+				
+				else {
 					
 
 					 TransactionDto trans = new TransactionDto();
-					 trans.setDescription("Tickets restau");
-					 trans.setEmmeteur(utiConnect);
-					 trans.setDestinataire(utiDes.get());
-					 trans.setMontantDemande(montantDemander);
-					 trans.setMontantCommision(comm);
+					 trans.setDescription("Transfert");
+					 trans.setIssuer(utiConnect);
+					 trans.setRecipient(utiRec.get());
+					 trans.setAmountAsked(amountAsked);
+					 trans.setAmountCommission(comm);
 					 trans.setTypeTransaction("virement");
 					 
 					 transactionDao.save(trans);
+					 
+					 transactionService.buildTransaction(idFriend, utiConnect.getIdUser() , amountAsked);	
+
 
 				}
-				
-				   transactionService.BuildTransaction(idAmi, utiConnect.getIdUtilisateur() , montantDemander);
-			
-			
-			
-			 
-				
-		
 				
 			
 		
@@ -116,14 +160,7 @@ public class TransferController {
 		
 	return "redirect:transfer";
 		
-	}
-
-	
-    		    
-    
-   
-
-	
+	}	
 	
 }
 

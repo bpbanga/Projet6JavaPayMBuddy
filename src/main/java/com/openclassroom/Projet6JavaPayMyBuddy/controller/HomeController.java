@@ -8,29 +8,31 @@ import  org.springframework.ui.Model;
 import  org.springframework.web.bind.annotation.GetMapping;
 
 
-  
-  @Controller 
-  public class HomeController {
+/**
+ * Controller for /transfer endpoint
+*/
+@Controller 
+public class HomeController {
 	  
-	    private static final Logger logger = LogManager.getLogger("HomeController");
+private static final Logger logger = LogManager.getLogger("HomeController");
 
 	  
   
-  @GetMapping("/home") 
-  public String showHome(Model model) {
+	/**
+	 * Endpoint GET /home to return Home
+	 * @param model attribute who make link between the front and back end
+	 * @return  html page Home
+	 */
+	@GetMapping("/home") 
+	public String showHome(Model model) {
 		logger.info("GET request to /home");
-
+	
+		  
 	  
+	return "Home";
+	}
   
-  return "Home";
-  }
- 
-  
-  
-  
-  
-  
-  }
+}
   
   
   
