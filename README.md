@@ -45,9 +45,11 @@
        
        . name variable :spring.datasource.url      value example: jdbc:mysql://localhost:3306/example_projet...
        
-       . name variable :spring.datasource.username value example: root
+       . name variable :spring.datasource.username value example: root.
        
-       . name variable :spring.datasoure.password  value example: password
+       . name variable :spring.datasoure.password  value example: password.
+
+  import the sql script : tchanaChretien_pages_3_112023.sql
     
  .Launch the application in commandLinner of the projet : mvn spring-boot:run
 
