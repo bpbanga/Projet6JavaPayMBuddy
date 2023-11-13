@@ -40,18 +40,22 @@
  .Clone the repo  https://github.com/bpbanga/Projet6JavaPayMBuddy/tree/old-state
  
  .Connect the application for the database
-   In workbench:
-   use the environnements variables :
-   . name variable :spring.datasource.url      value example: jdbc:mysql://localhost:3306/example_projet...
-   . name variable :spring.datasource.username value example: root
-   . name variable :spring.datasoure.password  value example: password
+       In workbench:
+       use the environnements variables :
+       . name variable :spring.datasource.url      value example: jdbc:mysql://localhost:3306/example_projet...
+       
+       . name variable :spring.datasource.username value example: root
+       
+       . name variable :spring.datasoure.password  value example: password
     
  .Launch the application in commandLinner of the projet : mvn spring-boot:run
 
  .acces at the application  http://localhost:8080/login
  
  .connect to the application
+ 
      diferents users and passwords :
         address : hayley@gmail.com , sam@gmail.com , clara@gmail.com , smith@gmail.com , nathan@gmail.com , pages@tchana.com.
+        
         password : papa , tortue , oiseau , tante , neveu , chretien.
 
