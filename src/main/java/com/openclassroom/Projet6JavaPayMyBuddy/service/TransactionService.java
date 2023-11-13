@@ -42,7 +42,7 @@ public class TransactionService {
 	public void buildTransaction(int idRec, int idUticonnect, float amountAsked) {
 		float amountRec = (float) (amountAsked - (amountAsked * 0.05));
 		Optional<UserDto> recipient = userDao.findById(idRec);
-		Optional<UserDto> issuer = userDao.findById(idRec);
+		Optional<UserDto> issuer = userDao.findById(idUticonnect);
 		if(recipient != null || issuer != null) {
 			
 			recipient.get().setAccountBalance(amountRec + recipient.get().getAccountBalance());

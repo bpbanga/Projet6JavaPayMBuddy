@@ -61,23 +61,26 @@ public class TransferController {
 			List<UserDto> friends = utiConnect.getFriends();
 			 model.addAttribute("friends", friends);
 			 
-			 List<TransactionDto> transUtiConnect = new ArrayList<TransactionDto>();
-			 for(TransactionDto transac:transactionDao.findAll()) {
-				 if(transac.getIssuer().getIdUser() == utiConnect.getIdUser()) {
-					 transUtiConnect.add(transac);
-				 }
-			 }
-			 int index = page * 3;
-			 List<TransactionDto> transAffiche = showTrans( index , transUtiConnect);
-			 int nbPage = (int) Math.ceil(transUtiConnect.size() / 3.0 );
-			
+			 List<TransactionDto> transUtiConnect = (List<TransactionDto>) transactionDao.findByIssuer(utiConnect);
 			 
-			  model.addAttribute("transFerts", transAffiche );
-			  model.addAttribute("transFertsAll", transUtiConnect );
+			 if (!transUtiConnect.isEmpty()) {
+				 				
+					 int index = page * 3;
+					 List<TransactionDto> transAffiche = showTrans( index , transUtiConnect);
+					 
+					 
+					 model.addAttribute("transFerts", transAffiche );
+					 model.addAttribute("transFertsAll", transUtiConnect );
+					 model.addAttribute("currentPage", page);
+					 
+				 
+			 }
+			 int nbPage = (int) Math.ceil(transUtiConnect.size() / 3.0 );
+			 model.addAttribute("nbPage", nbPage);
+			 
 			  model.addAttribute("transaction", new TransactionDto());
-			  model.addAttribute("error", error);
-			  model.addAttribute("currentPage", page);
-			  model.addAttribute("nbPage", nbPage);
+			  //model.addAttribute("error", error);
+			  
 
 
 		

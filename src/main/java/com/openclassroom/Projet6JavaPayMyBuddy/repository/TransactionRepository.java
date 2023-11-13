@@ -1,9 +1,12 @@
 package com.openclassroom.Projet6JavaPayMyBuddy.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
+import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 
 
 /**
@@ -12,4 +15,6 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
 @Repository
 public interface TransactionRepository extends CrudRepository<TransactionDto, Integer> {
 
+	List<TransactionDto> findByIssuer(UserDto issuer);
+	
 }

@@ -77,7 +77,7 @@
 				<form class="  d-inline-flex col-10 container-fluid justify-content-around align-baseline bg-striped border pt-4 "
 							 action="#" th:action="@{/transfer}" th:object="${transaction}" method="post">	
 					<select class=" col-3 custom-select seelct-form  border"   id="connections" name="connections">
-					        <option  value="-1">Select A Connections</option>
+					        <option  value="-1">Select A Connection</option>
 					        <option th:each="friend : ${friends}"
 					                th:value="${friend.getIdUser}"
 					                th:text="${friend.getName}" name="connectionId">
@@ -85,9 +85,7 @@
 		    		</select>
 					<input type="number"  class="amountAsked col-3  border"th:field="*{amountAsked}" min="0" max="1000" name="amountAsked">
 					<button class=" btn pay-button bg-success col-1 text-white border" type="submit">Pay</button>
-												<p th:if="${error == '1'}" >not enough funds </p>
-												<p th:if="${error == '2'}" >amount empty</p>
-												<p th:if="${error == '3'}" >select a connection</p>
+
 												
 
 
@@ -123,26 +121,26 @@
 					</tbody>
 					
 			</table>
-<nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/transfer(page=0)}">First</a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/transfer(page=${currentPage - 1})}">Previous</a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, nbPage - 1)}"
-                    th:classappend="${currentPage == i ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/transfer(page=${i})}" th:text="${i + 1}"></a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == nbPage - 1 ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/transfer(page=${currentPage + 1})}">Next</a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == nbPage - 1 ? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/transfer(page=${nbPage - 1})}">Last</a>
-                </li>
-            </ul>
-        </nav> 
+			<nav th:if="${nbPage > 0}" aria-label="Page navigation">
+	            <ul class="pagination">
+	                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+	                    <a class="page-link" th:href="@{/transfer(page=0)}">First</a>
+	                </li>
+	                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+	                    <a class="page-link" th:href="@{/transfer(page=${currentPage - 1})}">Previous</a>
+	                </li>
+	                <li class="page-item" th:each="i : ${#numbers.sequence(0, nbPage - 1)}"
+	                    th:classappend="${currentPage == i ? 'active' : ''}">
+	                    <a class="page-link" th:href="@{/transfer(page=${i})}" th:text="${i + 1}"></a>
+	                </li>
+	                <li class="page-item" th:classappend="${currentPage == nbPage - 1 ? 'disabled' : ''}">
+	                    <a class="page-link" th:href="@{/transfer(page=${currentPage + 1})}">Next</a>
+	                </li>
+	                <li class="page-item" th:classappend="${currentPage == nbPage - 1 ? 'disabled' : ''}">
+	                    <a class="page-link" th:href="@{/transfer(page=${nbPage - 1})}">Last</a>
+	                </li>
+	            </ul>
+       	 </nav> 
 			</div>	
 				   
 				
