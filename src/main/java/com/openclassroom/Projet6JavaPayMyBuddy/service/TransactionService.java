@@ -1,6 +1,7 @@
 package com.openclassroom.Projet6JavaPayMyBuddy.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class TransactionService {
 	@Autowired
 	private UserRepository userDao;
 	
+
+	
 	/**
 	 * method returning the list of database transactions
 	 * @return list of transactions
@@ -38,22 +41,20 @@ public class TransactionService {
 	 */
 	public void buildTransaction(int idRec, int idUticonnect, float amountAsked) {
 		float amountRec = (float) (amountAsked - (amountAsked * 0.05));
-		List<UserDto>userDtos = (List<UserDto>) userDao.findAll();
-		for (UserDto recipient : userDtos) {
-			if(idRec == recipient.getIdUser()) {
-				recipient.setAccountBalance(amountRec + recipient.getAccountBalance());
-				 
-			}
-			userDao.save(recipient);
+		Optional<UserDto> recipient = userDao.findById(idRec);
+		Optional<UserDto> issuer = userDao.findById(idRec);
+		if(recipient != null || issuer != null) {
+			
+			recipient.get().setAccountBalance(amountRec + recipient.get().getAccountBalance());
+			issuer.get().setAccountBalance(issuer.get().getAccountBalance()  - amountAsked  );
+			 
+			
 		}
-		for (UserDto issuer : userDtos) {
-			if(idUticonnect == issuer.getIdUser()) {
-				issuer.setAccountBalance(issuer.getAccountBalance()  - amountAsked  );
-				 
-			}
-			userDao.save(issuer);
+			
+		userDao.save(recipient.get());
+		userDao.save(issuer.get());
 
-		}
+		
 		
 	}
 	
@@ -66,22 +67,23 @@ public class TransactionService {
 	 */
 	public void buildAccountBalance(String rib , String action, float amountTrans) {
 		float amountRec = (float) (amountTrans - (amountTrans * 0.05));
-		List<UserDto>userDtos = (List<UserDto>) userDao.findAll();
-		for (UserDto recipient : userDtos) {
-			if(rib == recipient.getRib()) {
+		
+		UserDto user = new UserDto();
+		
+			if(rib == user.getRib()) {
 				if(action == "deposit" || action!= "") {
-					recipient.setAccountBalance(amountRec + recipient.getAccountBalance());
+					user.setAccountBalance(amountRec + user.getAccountBalance());
 
 				}else {
-					recipient.setAccountBalance(recipient.getAccountBalance() - amountRec);
+					user.setAccountBalance(user.getAccountBalance() - amountRec);
 				}
 				
 				 
 			}
-			userDao.save(recipient);
+			userDao.save(user);
 
-		}
-		
 	}
-
+		
 }
+
+
