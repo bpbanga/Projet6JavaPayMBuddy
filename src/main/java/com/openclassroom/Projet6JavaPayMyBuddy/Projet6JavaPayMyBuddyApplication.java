@@ -8,13 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.openclassroom.Projet6JavaPayMyBuddy.model.*;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
-import com.openclassroom.Projet6JavaPayMyBuddy.repository.UtilisateurRepository;
+import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
 
 @SpringBootApplication
 public class Projet6JavaPayMyBuddyApplication implements CommandLineRunner{
 
 	  @Autowired
-	  UtilisateurRepository utilisateurDao;
+	  UserRepository utilisateurDao;
 	  
 		@Autowired
 		private TransactionRepository transactionDao;	
@@ -28,36 +28,38 @@ public class Projet6JavaPayMyBuddyApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		    
+		
 		/*
-		 * // utilisateur 1 Utilisateur uti =new Utilisateur();
-		 * uti.setEmail("titi@toto.com"); uti.setName("Titi");
-		 * uti.setPassword(passwordEncoder.encode("password")); uti.setRib("123456");
-		 * uti.setAccountBalance(100);
+		 * // user 1 UserDto uti =new UserDto(); uti.setEmail("hayley@gmail.com");
+		 * uti.setName("Hayley"); uti.setPassword(passwordEncoder.encode("password"));
+		 * uti.setRib("123456"); uti.setAccountBalance(100);
 		 * 
-		 * // utilisateur 2 Utilisateur uti2 =new Utilisateur();
-		 * uti2.setEmail("toto@titi.com"); uti2.setName("toto");
-		 * uti2.setPassword(passwordEncoder.encode("password")); uti2.setRib("654321");
-		 * uti2.setAccountBalance(200);
+		 * // user 2 UserDto uti2 =new UserDto(); uti2.setEmail("clara@gamil.com");
+		 * uti2.setName("Clara"); uti2.setPassword(passwordEncoder.encode("password"));
+		 * uti2.setRib("654321"); uti2.setAccountBalance(200);
 		 * 
-		 * // utilisateur 3 Utilisateur uti3 =new Utilisateur();
-		 * uti3.setEmail("tutu@titi.com"); uti3.setName("tutu");
-		 * uti3.setPassword(passwordEncoder.encode("password")); uti3.setRib("987654");
-		 * uti3.setAccountBalance(50);
+		 * // user 3 UserDto uti3 =new UserDto(); uti3.setEmail("smith@gmail.com");
+		 * uti3.setName("Smith"); uti3.setPassword(passwordEncoder.encode("password"));
+		 * uti3.setRib("987654"); uti3.setAccountBalance(50);
 		 * 
-		 * // amis uti.getAmis().add(uti2); uti.getAmis().add(uti3);
-		 * uti2.getAmis().add(uti); uti2.getAmis().add(uti3);
+		 * 
+		 * 
+		 * 
+		 * 
+		 * // friends uti.getFriends().add(uti2); uti.getFriends().add(uti3);
+		 * uti2.getFriends().add(uti); uti2.getFriends().add(uti3);
 		 * 
 		 * utilisateurDao.save(uti); utilisateurDao.save(uti2);
 		 * 
-		 * // transactions Transaction tran1 = new Transaction();
-		 * tran1.setDescription("Transaction 1"); tran1.setEmmeteur(uti);
-		 * tran1.setDestinataire(uti2); tran1.setMontantDemande(20);
-		 * tran1.setMontantCommision(1); tran1.setTypeTransaction("virement");
+		 * // transactions TransactionDto tran1 = new TransactionDto(0, null, 0, 0,
+		 * null, uti3, uti3); tran1.setDescription("Transaction 1");
+		 * tran1.setIssuer(uti); tran1.setRecipient(uti2); tran1.setAmountAsked(20);
+		 * tran1.setAmountCommission(1); tran1.setTypeTransaction("virement");
 		 * 
-		 * Transaction tran2 = new Transaction(); tran2.setDescription("Transaction 2");
-		 * tran2.setEmmeteur(uti); tran2.setDestinataire(uti3);
-		 * tran2.setMontantDemande(40); tran2.setMontantCommision(2);
-		 * tran2.setTypeTransaction("virement");
+		 * TransactionDto tran2 = new TransactionDto();
+		 * tran2.setDescription("Transaction 2"); tran2.setIssuer(uti);
+		 * tran2.setRecipient(uti3); tran2.setAmountAsked(40);
+		 * tran2.setAmountCommission(2); tran2.setTypeTransaction("virement");
 		 * 
 		 * transactionDao.save(tran1); transactionDao.save(tran2);
 		 */

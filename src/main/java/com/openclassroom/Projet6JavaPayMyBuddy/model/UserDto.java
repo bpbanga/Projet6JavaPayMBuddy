@@ -17,17 +17,19 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
+/**
+ *  application user model class
+ */
 @Entity
-@Table(name = "utilisateur")
-public class Utilisateur {
+@Table(name = "user")
+public class UserDto {
 	
 	
 
 	@Id
 	@Column( name = "id" )
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int idUtilisateur;
+	private int idUser;
 		
 	
 	
@@ -47,30 +49,30 @@ public class Utilisateur {
 	private String password;
 	 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	    @JoinTable(
-	            name = "ami",
+	            name = "friend",
 	            joinColumns = @JoinColumn(
-	                    name = "id_emetteur", referencedColumnName = "id"),
+	                    name = "id_issuer", referencedColumnName = "id"),
 	            inverseJoinColumns = @JoinColumn(
-	                    name = "id_recepteur", referencedColumnName = "id"))
-	    private List<Utilisateur> amis = new ArrayList<>();
+	                    name = "id_recipient", referencedColumnName = "id"))
+	    private List<UserDto> friends = new ArrayList<>();
 	
 	@OneToMany(
-			mappedBy ="destinataire",
+			mappedBy ="recipient",
 			cascade =CascadeType.ALL,
 			orphanRemoval = true)
-	List<Transaction> emetteurs = new ArrayList<>();
+	List<TransactionDto> issuers = new ArrayList<>();
 	
 	@OneToMany(
-			mappedBy ="emmeteur",
+			mappedBy ="issuer",
 			cascade =CascadeType.ALL,
 			orphanRemoval = true)
-     List<Transaction> recepteurs = new ArrayList<>();
+     List<TransactionDto> recipients = new ArrayList<>();
 
 	
 
-	public Utilisateur(int idUtilisateur, String nom, float accountBalance, String rib, String email, String password) {
+	public UserDto(int idUser, String name, float accountBalance, String rib, String email, String password) {
 		super();
-		this.idUtilisateur = idUtilisateur;
+		this.idUser = idUser;
 		this.accountBalance = accountBalance;
 		this.rib = rib;
 		this.email = email;
@@ -79,19 +81,19 @@ public class Utilisateur {
 
 
 
-	public Utilisateur() {
+	public UserDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 		
-		public int getIdUtilisateur() {
-		return idUtilisateur;
+		public int getIdUser() {
+		return idUser;
 	}
 
 
 
-	public void setIdUtilisateur(int idUtilisateur) {
-		this.idUtilisateur = idUtilisateur;
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
 
 
@@ -144,14 +146,14 @@ public class Utilisateur {
 
 
 
-	public List<Utilisateur> getAmis() {
-		return amis;
+	public List<UserDto> getFriends() {
+		return friends;
 	}
 
 
 
-	public void setAmis(List<Utilisateur> amis) {
-		this.amis = amis;
+	public void setFriends(List<UserDto> friends) {
+		this.friends = friends;
 	}
 
 
@@ -167,27 +169,31 @@ public class Utilisateur {
 
 
 
-	public List<Transaction> getEmetteurs() {
-		return emetteurs;
+	public List<TransactionDto> getIssuers() {
+		return issuers;
 	}
 
 
 
-	public void setEmetteurs(List<Transaction> emetteurs) {
-		this.emetteurs = emetteurs;
+	public void setIssuers(List<TransactionDto> issuers) {
+		this.issuers = issuers;
 	}
 
 
 
-	public List<Transaction> getRecepteurs() {
-		return recepteurs;
+	public List<TransactionDto> getRecipients() {
+		return recipients;
 	}
 
 
 
-	public void setRecepteurs(List<Transaction> recepteurs) {
-		this.recepteurs = recepteurs;
+	public void setRecipients(List<TransactionDto> recipients) {
+		this.recipients = recipients;
 	}
+
+
+
+	
 
 
 

@@ -13,10 +13,12 @@ import jakarta.persistence.Id;
 
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+/**
+ * application transaction model class
+ */
 @Entity
 @Table(name = "transaction")
-public class Transaction {
+public class TransactionDto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +28,11 @@ public class Transaction {
 	@Column( name = "type_transaction")
 	private String typeTransaction;
 	
-	@Column( name = "montant_demande")
-	private float montantDemande;
+	@Column( name = "amount_asked")
+	private float amountAsked;
 	
-	@Column( name = "montant_commision")
-	private float montantCommision;
+	@Column( name = "amount_commission")
+	private float amountCommission;
 
 	@Column( name = "description")
 	private String description;
@@ -38,15 +40,15 @@ public class Transaction {
 	@ManyToOne( 
 			cascade = CascadeType.MERGE
 			)
-	@JoinColumn( name = "destinataire_id")
-	private Utilisateur  destinataire;
+	@JoinColumn( name = "recipient_id")
+	private UserDto  recipient;
 	
 	
 	@ManyToOne( 
 			cascade = CascadeType.MERGE
 			)
-	@JoinColumn( name = "emmeteur_id")
-	private Utilisateur emmeteur;
+	@JoinColumn( name = "issuer_id")
+	private UserDto issuer;
 
 	
 	
@@ -70,23 +72,23 @@ public class Transaction {
 	}
 
 
-	public float getMontantDemande() {
-		return montantDemande;
+	public float getAmountAsked() {
+		return amountAsked;
 	}
 
 
-	public void setMontantDemande(float montantDemande) {
-		this.montantDemande = montantDemande;
+	public void setAmountAsked(float amountAsked) {
+		this.amountAsked = amountAsked;
 	}
 
 
-	public float getMontantCommision() {
-		return montantCommision;
+	public float getAmountCommission() {
+		return amountCommission;
 	}
 
 
-	public void setMontantCommision(float montantCommision) {
-		this.montantCommision = montantCommision;
+	public void setAmountCommission(float amountCommission) {
+		this.amountCommission = amountCommission;
 	}
 
 
@@ -100,47 +102,45 @@ public class Transaction {
 	}
 
 
-	public Utilisateur getDestinataire() {
-		return destinataire;
+	public UserDto getRecipient() {
+		return recipient;
 	}
 
 
-	public void setDestinataire(Utilisateur destinataire) {
-		this.destinataire = destinataire;
+	public void setRecipient(UserDto recipient) {
+		this.recipient = recipient;
 	}
 
 
-	public Utilisateur getEmmeteur() {
-		return emmeteur;
+	public UserDto getIssuer() {
+		return issuer;
 	}
 
 
-	public void setEmmeteur(Utilisateur emmeteur) {
-		this.emmeteur = emmeteur;
+	public void setIssuer(UserDto issuer) {
+		this.issuer = issuer;
 	}
 	
 	
 
-	public Transaction(int idTransaction, String typeTransaction, float montantDemande, float montantCommision,
-			String description, Utilisateur destinataire, Utilisateur emmeteur) {
+	public TransactionDto(int idTransaction, String typeTransaction, float amountAsked, float amountCommission,
+			String description, UserDto recipient, UserDto issuer) {
 		super();
 		this.idTransaction = idTransaction;
 		this.typeTransaction = typeTransaction;
-		this.montantDemande = montantDemande;
-		this.montantCommision = montantCommision;
+		this.amountAsked = amountAsked;
+		this.amountCommission = amountCommission;
 		this.description = description;
-		this.destinataire = destinataire;
-		this.emmeteur = emmeteur;
+		this.recipient = recipient;
+		this.issuer = issuer;
 	}
+
+
+	public TransactionDto() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	
-	public Transaction() {
-		// TODO Auto-generated constructor stub
-	}
 
-
-
-
-	public Transaction(Object object, Object object2) {
-		// TODO Auto-generated constructor stub
-	}
 }

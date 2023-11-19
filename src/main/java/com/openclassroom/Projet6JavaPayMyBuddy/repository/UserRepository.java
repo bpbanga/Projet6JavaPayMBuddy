@@ -1,7 +1,5 @@
 package com.openclassroom.Projet6JavaPayMyBuddy.repository;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,11 +8,16 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 
 
 /**
- * interface for generic CRUD operations on an application transaction repository 
+ * interface for generic CRUD operations on an application users repository 
  */
 @Repository
-public interface TransactionRepository extends CrudRepository<TransactionDto, Integer> {
-
-	List<TransactionDto> findByIssuer(UserDto issuer);
+public interface UserRepository extends CrudRepository<UserDto, Integer> {
 	
+	/**
+	 * method allowing user search based on a given email
+	 * @param email
+	 * @return
+	 */
+	UserDto findByEmail(String email);  
+
 }
