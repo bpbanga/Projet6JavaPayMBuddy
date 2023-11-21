@@ -37,17 +37,11 @@
  
  Instalation
 
- .Clone the repo  https://github.com/bpbanga/Projet6JavaPayMBuddy/tree/old-state
+ .Clone the repo  https://github.com/bpbanga/Projet6JavaPayMBuddy/tree/master
  
  .Connect the application for the database
-       In workbench:
-       use the environnements variables :
-       
-       . name variable :spring.datasource.url      value example: jdbc:mysql://localhost:3306/example_projet...
-       
-       . name variable :spring.datasource.username value example: root.
-       
-       . name variable :spring.datasoure.password  value example: password.
+ Go to the commandliner of the package test and use this code :
+ -java -jar demo-0.0.1-SNAPSHOT.jar
 
   import the sql script : tchanaChretien_pages_3_112023.sql
     
