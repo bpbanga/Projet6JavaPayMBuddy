@@ -148,9 +148,15 @@ public class TransferController {
 					 trans.setAmountCommission(comm);
 					 trans.setTypeTransaction("virement");
 					 
-					 transactionDao.save(trans);
 					 
-					 transactionService.buildTransaction(idFriend, utiConnect.getIdUser() , amountAsked);	
+					try { 
+						transactionService.buildTransaction(idFriend, utiConnect.getIdUser() , amountAsked , trans);
+					
+					
+					} catch (Exception e) {
+						return "redirect:/error?error=10";
+						
+					}
 
 
 				}

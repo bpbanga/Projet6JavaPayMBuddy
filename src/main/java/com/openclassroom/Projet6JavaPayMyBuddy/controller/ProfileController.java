@@ -15,6 +15,8 @@ import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
 import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.TransactionRepository;
 import com.openclassroom.Projet6JavaPayMyBuddy.repository.UserRepository;
+import com.openclassroom.Projet6JavaPayMyBuddy.service.TransactionService;
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -25,8 +27,9 @@ import jakarta.servlet.http.HttpSession;
 public class ProfileController {
 	
 	
+	
 	@Autowired
-	private TransactionRepository transactionDao;
+	private TransactionService transactionService ;
 	
 	@Autowired
 	private UserRepository userDao;
@@ -100,21 +103,19 @@ public class ProfileController {
 							
 							utiConnect.setAccountBalance(utiConnect.getAccountBalance() - (comm + amountAsked));
 							
-							transactionDao.save(trans);
-							userDao.save(utiConnect);
-							
+						  	transactionService.buildAccountBalance(utiConnect, trans);
+	
 						}
 					
-					if("deposit".equals(userAction.getTypeTransaction())){
-						if(amountAsked <= 0) {
-							return "redirect:error?error=7";
-						}
-						utiConnect.setAccountBalance(utiConnect.getAccountBalance() + ( amountAsked - comm));
+					  if("deposit".equals(userAction.getTypeTransaction())){
+						  	if(amountAsked <= 0) {
+						  		return "redirect:error?error=7";
+						  	}
+						  	utiConnect.setAccountBalance(utiConnect.getAccountBalance() + ( amountAsked - comm));
+						  	
+						  	transactionService.buildAccountBalance(utiConnect, trans);
 
-						
-						transactionDao.save(trans);
-						userDao.save(utiConnect);
-					}		
+					  	}
 			
 			} catch(Exception e) {
 				

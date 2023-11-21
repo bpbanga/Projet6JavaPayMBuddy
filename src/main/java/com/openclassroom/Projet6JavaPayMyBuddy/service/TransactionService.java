@@ -1,10 +1,12 @@
 package com.openclassroom.Projet6JavaPayMyBuddy.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.openclassroom.Projet6JavaPayMyBuddy.model.TransactionDto;
 import com.openclassroom.Projet6JavaPayMyBuddy.model.UserDto;
@@ -38,24 +40,28 @@ public class TransactionService {
 	 * @param idRec receiver identifier
 	 * @param idUticonnect  sender identifier
 	 * @param amountAsked amount requested
+	 * @param trans 
 	 */
-	public void buildTransaction(int idRec, int idUticonnect, float amountAsked) {
+	@Transactional(rollbackFor = { SQLException.class})
+	public void buildTransaction(int idRec, int idUticonnect, float amountAsked, TransactionDto trans) throws SQLException{
 		float amountRec = (float) (amountAsked - (amountAsked * 0.05));
 		Optional<UserDto> recipient = userDao.findById(idRec);
 		Optional<UserDto> issuer = userDao.findById(idUticonnect);
-		if(recipient != null || issuer != null) {
+		if(recipient.isPresent() && issuer.isPresent()) {
 			
 			recipient.get().setAccountBalance(amountRec + recipient.get().getAccountBalance());
 			issuer.get().setAccountBalance(issuer.get().getAccountBalance()  - amountAsked  );
-			 
+			
+			userDao.save(recipient.get());
+			userDao.save(issuer.get());
+			transactionDao.save(trans);
+			// uncomment exception throw to verify transaction integrity 
+		    //throw new SQLException("Throwing exception for demoing rollback");
 			
 		}
 			
-		userDao.save(recipient.get());
-		userDao.save(issuer.get());
+		
 
-		
-		
 	}
 	
 	
@@ -65,22 +71,14 @@ public class TransactionService {
 	 * @param action type of transaction
 	 * @param amountTrans amount of transaction
 	 */
-	public void buildAccountBalance(String rib , String action, float amountTrans) {
-		float amountRec = (float) (amountTrans - (amountTrans * 0.05));
+	@Transactional(rollbackFor = { SQLException.class})
+	public void buildAccountBalance(UserDto uticonnect, TransactionDto trans) {
 		
-		UserDto user = new UserDto();
 		
-			if(rib == user.getRib()) {
-				if(action == "deposit" || action!= "") {
-					user.setAccountBalance(amountRec + user.getAccountBalance());
-
-				}else {
-					user.setAccountBalance(user.getAccountBalance() - amountRec);
-				}
-				
-				 
-			}
-			userDao.save(user);
+			userDao.save(uticonnect);
+			transactionDao.save(trans);
+			// uncomment exception throw to verify transaction integrity 
+		    //throw new SQLException("Throwing exception for demoing rollback");
 
 	}
 		
