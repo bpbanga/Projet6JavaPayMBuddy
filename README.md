@@ -40,12 +40,10 @@
  .Clone the repo  https://github.com/bpbanga/Projet6JavaPayMBuddy/tree/master
  
  .Connect the application for the database
- Go to the commandliner of the package test and use this code :
- -java -jar demo-0.0.1-SNAPSHOT.jar
+ In workbench:
+ use the values of application properties : spring.datasource.username value and spring.datasoruce.password value
 
   import the sql script : tchanaChretien_pages_3_112023.sql
-    
- .Launch the application in commandLinner of the projet : mvn spring-boot:run
 
  .acces at the application : http://localhost:8080/login
  
